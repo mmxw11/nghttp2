@@ -287,11 +287,17 @@ if(ENABLE_ASIO_LIB)
     "${CMAKE_CURRENT_SOURCE_DIR}/../lib/includes"
     "${CMAKE_CURRENT_SOURCE_DIR}/includes"
   )
+  if(WIN32)
+    target_compile_definitions(nghttp2_asio PRIVATE NOMINMAX)
+    set_target_properties(nghttp2_asio PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+  endif()
   target_link_libraries(nghttp2_asio
     nghttp2
     ${OPENSSL_LIBRARIES}
     ${Boost_LIBRARIES}
   )
+  # Assume Win10
+  add_definitions(/D_WIN32_WINNT=0x0A00)
   set_target_properties(nghttp2_asio PROPERTIES
     VERSION 1.0.0 SOVERSION 1)
 
